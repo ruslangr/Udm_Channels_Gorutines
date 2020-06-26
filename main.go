@@ -24,8 +24,13 @@ func main() {
 	//fmt.Println(<-c) - если сделать не в цикле, то программа завершится после получения 1го результата
 	//fmt.Println(<-c) - или завершится после получения 2го
 
-	for i := 0; i < len(links); i++ {
-		fmt.Println(<-c)
+	// для блокировки завершения добавляем цикл с ожиданием вывода из
+	//	for i := 0; i < len(links); i++ {
+	//		fmt.Println(<-c)
+	//	}
+
+	for {
+		go checkLink(<-c, c)
 	}
 
 }
@@ -34,9 +39,10 @@ func checkLink(link string, c chan string) {
 	_, err := http.Get(link)
 	if err != nil {
 		fmt.Println(link, "- not available", err)
-		c <- "May be a problem"
+		c <- link
 		return
 	}
 	fmt.Println(link, "is up!")
-	c <- "Yep its up" //делается для блокирования и препятствования преждевременного завершения main
+	//c <- "Yep its up" //делается для блокирования и препятствования преждевременного завершения main
+	c <- link
 }
