@@ -19,9 +19,15 @@ func main() {
 
 	for _, link := range links {
 		go checkLink(link, c)
-
+		//	fmt.Println(<-c) // main не завершите пока не получит из канала сообщение
 	}
-	fmt.Println(<-c)
+	//fmt.Println(<-c) - если сделать не в цикле, то программа завершится после получения 1го результата
+	//fmt.Println(<-c) - или завершится после получения 2го
+
+	for i := 0; i < len(links); i++ {
+		fmt.Println(<-c)
+	}
+
 }
 
 func checkLink(link string, c chan string) {
@@ -32,5 +38,5 @@ func checkLink(link string, c chan string) {
 		return
 	}
 	fmt.Println(link, "is up!")
-	c <- "Yep its up"
+	c <- "Yep its up" //делается для блокирования и препятствования преждевременного завершения main
 }
