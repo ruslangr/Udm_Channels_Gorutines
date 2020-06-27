@@ -33,16 +33,17 @@ func main() {
 	for l := range c {
 		//	time.Sleep(5 * time.Second) - если добавить сюда, то будет паузится main gourutine, соотвественно ответу от вспомогательных gorutine некуда будет приходить
 		//go checkLink(l, c)
-		go func() {						//добавляем литерал
-			time.Sleep(5*time.Second)
-			checkLink(l, c)
-		}
+		go func() {
+			time.Sleep(5 * time.Second)
+			go checkLink(l, c)
+		}()
+
 	}
 
 }
 
 func checkLink(link string, c chan string) {
-	//time.Sleep(5 * time.Second)
+	//	time.Sleep(5 * time.Second)
 	_, err := http.Get(link)
 	if err != nil {
 		fmt.Println(link, "- not available", err)
