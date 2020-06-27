@@ -31,12 +31,12 @@ func main() {
 	//	}
 
 	for l := range c {
-		//	time.Sleep(5 * time.Second) - если добавить сюда, то будет паузится main gourutine, соотвественно ответу от вспомогательных gorutine некуда будет приходить
-		//go checkLink(l, c)
-		go func() {
+		// time.Sleep(5 * time.Second) - если добавить сюда, то будет паузится main gourutine, соотвественно ответу от вспомогательных gorutine некуда будет приходить
+		// go checkLink(l, c)
+		go func(link string) {
 			time.Sleep(5 * time.Second)
-			go checkLink(l, c)
-		}() // - скобки нужны для запуска анонимной функции
+			go checkLink(link, c)
+		}(l) // - скобки нужны для вызова функции
 	}
 
 }
